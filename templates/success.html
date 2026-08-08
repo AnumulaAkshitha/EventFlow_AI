@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow text-center p-4">
+
+        <h2 class="text-success">
+            🎉 Registration Successful
+        </h2>
+
+        <hr>
+
+        <h4>Registration ID</h4>
+
+        <h3 class="text-primary">
+            {{ registration_id }}
+        </h3>
+
+        <p><strong>Name:</strong> {{ attendee.name }}</p>
+        <p><strong>Email:</strong> {{ attendee.email }}</p>
+        <p><strong>Event:</strong> {{ attendee.event }}</p>
+
+        <img src="/{{ attendee.qr_code }}"
+             width="250"
+             class="img-fluid my-3">
+
+        <br>
+
+        <a href="/{{ attendee.qr_code }}"
+           download
+           class="btn btn-success">
+
+            Download QR Code
+
+        </a>
+
+        <a href="/"
+           class="btn btn-primary mt-3">
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

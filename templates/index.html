@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold">📊 Dashboard</h2>
+
+<p class="text-muted">
+Welcome back! Here's an overview of your event.
+</p>
+
+<div class="row mt-4">
+
+    <div class="col-md-3">
+        <div class="card shadow border-primary p-3">
+            <h5>👥 Total Attendees</h5>
+            <h2>{{ total_attendees }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-success p-3">
+            <h5>✅ Checked-In</h5>
+            <h2>{{ checked_in }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-warning p-3">
+            <h5>⏳ Pending</h5>
+            <h2>{{ pending }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-info p-3">
+            <h5>🎯 Expected Attendance</h5>
+            <h2>{{ expected_attendance }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mt-5">
+
+    <div class="col-md-8">
+
+        <div class="card shadow p-4">
+
+            <h4>📈 Registration Trend</h4>
+
+            <div class="row mt-4">
+
+    <div class="col-md-6 mb-3">
+
+        <div class="card border-success shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h5>👥 Total Registrations</h5>
+
+                <h2 class="text-success">{{ total_attendees }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6 mb-3">
+
+        <div class="card border-primary shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h5>🎯 Expected Attendance</h5>
+
+                <h2 class="text-primary">{{ expected_attendance }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr>
+
+<h5>Registration Progress</h5>
+
+<div class="progress mb-3" style="height:25px;">
+
+    <div class="progress-bar bg-success" style="width:100%;">
+
+        {{ total_attendees }} Registered
+
+    </div>
+
+</div>
+
+<h5>Check-In Progress</h5>
+
+<div class="progress mb-3" style="height:25px;">
+
+    <div class="progress-bar bg-primary"
+         style="width:{{ (checked_in*100/total_attendees) if total_attendees else 0 }}%;">
+
+        {{ checked_in }} Checked-In
+
+    </div>
+
+</div>
+
+<h5>AI Confidence</h5>
+
+<div class="progress" style="height:25px;">
+
+    <div class="progress-bar bg-warning text-dark"
+         style="width:{{ confidence }}%;">
+
+        {{ confidence }}%
+
+    </div>
+
+</div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow p-4">
+
+            <h4>🤖 AI Insights</h4>
+
+            <hr>
+
+            <p>🔥 <b>Trending Event:</b> {{ trending_event }}</p>
+
+            <p>👥 <b>Majority Audience:</b> {{ majority_category }}</p>
+
+            <p>🏢 <b>Recommended Venue:</b> {{ venue }}</p>
+
+            <p>🙋 <b>Suggested Volunteers:</b> {{ volunteers }}</p>
+
+            <p>
+                ⚠ <b>Crowd Status:</b>
+
+                {% if crowd=="High" %}
+                    <span class="badge bg-danger">{{ crowd }}</span>
+
+                {% elif crowd=="Moderate" %}
+                    <span class="badge bg-warning text-dark">{{ crowd }}</span>
+
+                {% else %}
+                    <span class="badge bg-success">{{ crowd }}</span>
+
+                {% endif %}
+            </p>
+
+            <p>🎯 <b>Prediction Confidence</b></p>
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar bg-primary"
+                    style="width:{{ confidence }}%">
+
+                    {{ confidence }}%
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <h6>🧠 AI Summary</h6>
+
+            <small class="text-muted">
+
+                Based on current registrations,
+
+                <b>{{ trending_event }}</b>
+
+                is the most popular event.
+
+                Most participants are
+
+                <b>{{ majority_category }}</b>.
+
+                AI recommends using
+
+                <b>{{ venue }}</b>
+
+                with
+
+                <b>{{ volunteers }}</b>
+
+                volunteers.
+
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row mt-5">
+
+<div class="col-md-12">
+
+<div class="card shadow p-4">
+
+<h4>📝 Recent Registrations</h4>
+
+<table class="table table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Event</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for attendee in recent_attendees %}
+
+<tr>
+
+<td>{{ attendee.name }}</td>
+
+<td>{{ attendee.email }}</td>
+
+<td>{{ attendee.event }}</td>
+
+<td>
+
+{% if attendee.checkin %}
+
+<span class="badge bg-success">
+
+Checked-In
+
+</span>
+
+{% else %}
+
+<span class="badge bg-warning text-dark">
+
+Registered
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+{% endblock %}

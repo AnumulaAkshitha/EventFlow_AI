@@ -1,0 +1,37 @@
+body{
+    background:#F5F7FB;
+}
+
+.sidebar{
+    min-height:100vh;
+    background:#0F172A;
+}
+
+.sidebar .nav-link{
+    color:white;
+    padding:14px;
+    border-radius:8px;
+    margin:6px;
+}
+
+.sidebar .nav-link:hover{
+    background:#2563EB;
+}
+
+.card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.card h2{
+    font-weight:bold;
+    color:#2563EB;
+}
+
+.table{
+    margin-top:20px;
+}
+
+canvas{
+    height:280px!important;
+}

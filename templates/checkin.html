@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Check-in{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card shadow p-4">
+
+        <h2 class="text-primary mb-4">Attendee Check-in</h2>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="registration_id"
+                class="form-control mb-3"
+                placeholder="Enter Registration ID (Example: EVT00001)"
+                required>
+
+            <button class="btn btn-success">
+                Check In
+            </button>
+
+        </form>
+
+        {% if message %}
+
+        <div class="alert alert-info mt-4">
+
+            {{ message }}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}AI Insights{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+<h2 class="mb-4 text-primary">
+🤖 AI Insights Dashboard
+</h2>
+
+<div class="row">
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow border-primary">
+
+<div class="card-body">
+
+<h5>🔥 Trending Event</h5>
+
+<h3>{{ trending_event }}</h3>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow border-success">
+
+<div class="card-body">
+
+<h5>👥 Majority Audience</h5>
+
+<h3>{{ majority_category }}</h3>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow border-warning">
+
+<div class="card-body">
+
+<h5>🏢 Venue Recommendation</h5>
+
+<h3>{{ venue }}</h3>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h5>📈 Expected Attendance</h5>
+
+<h2>{{ expected_attendance }}/{{ total }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h5>🙋 Volunteers Needed</h5>
+
+<h2>{{ volunteers }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<h5>⚠ Crowd Status</h5>
+
+<h2>{{ crowd }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card shadow mt-4">
+
+<div class="card-body">
+
+<h4>🤖 AI Summary</h4>
+
+<ul>
+
+<li>Total registrations: <b>{{ total }}</b></li>
+
+<li>Checked-in attendees: <b>{{ checked_in }}</b></li>
+
+<li>Pending attendees: <b>{{ pending }}</b></li>
+
+<li>Most popular event: <b>{{ trending_event }}</b></li>
+
+<li>Majority audience: <b>{{ majority_category }}</b></li>
+
+<li>Recommended venue: <b>{{ venue }}</b></li>
+
+<li>Suggested volunteers: <b>{{ volunteers }}</b></li>
+
+<li>Prediction confidence: <b>{{ confidence }}%</b></li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

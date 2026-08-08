@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block title %}Register Attendee{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow p-4">
+
+        <h2 class="mb-4 text-primary">Event Registration</h2>
+
+        {% if error %}
+
+<div class="alert alert-danger">
+
+    {{ error }}
+
+</div>
+
+{% endif %}
+
+        <form method="POST" id="registerForm">
+
+            <!-- Name -->
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    required>
+
+                <small id="nameError"></small>
+
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    required>
+
+                <small id="emailError"></small>
+
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+                <label class="form-label">Phone</label>
+
+                <input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    class="form-control"
+                    maxlength="10"
+                    required>
+
+                <small id="phoneError"></small>
+
+            </div>
+
+            <!-- Event -->
+            <div class="mb-3">
+
+                <label class="form-label">Event</label>
+
+                <select
+                    id="event"
+                    name="event"
+                    class="form-select"
+                    required>
+
+                    <option value="">Select Event</option>
+
+                    <option>AI Workshop</option>
+                    <option>Hackathon</option>
+                    <option>Cloud Summit</option>
+
+                </select>
+
+                <small id="eventError"></small>
+
+            </div>
+
+            <!-- Category -->
+            <div class="mb-3">
+
+                <label class="form-label">Category</label>
+
+                <select
+                    id="category"
+                    name="category"
+                    class="form-select"
+                    required>
+
+                    <option value="">Select Category</option>
+
+                    <option>Student</option>
+                    <option>Professional</option>
+                    <option>Speaker</option>
+
+                </select>
+
+                <small id="categoryError"></small>
+
+            </div>
+
+            <button
+                id="registerBtn"
+                class="btn btn-primary"
+                disabled>
+
+                Register
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+const nameInput=document.getElementById("name");
+const emailInput=document.getElementById("email");
+const phoneInput=document.getElementById("phone");
+const eventInput=document.getElementById("event");
+const categoryInput=document.getElementById("category");
+const btn=document.getElementById("registerBtn");
+
+function setValid(input,msgBox,msg){
+
+    input.classList.remove("is-invalid");
+    input.classList.add("is-valid");
+
+    msgBox.className="text-success";
+    msgBox.innerHTML=msg;
+
+}
+
+function setInvalid(input,msgBox,msg){
+
+    input.classList.remove("is-valid");
+    input.classList.add("is-invalid");
+
+    msgBox.className="text-danger";
+    msgBox.innerHTML=msg;
+
+}
+
+function validateName(){
+
+    const msg=document.getElementById("nameError");
+
+    const regex=/^[A-Za-z ]+$/;
+
+    const value=nameInput.value.trim();
+
+    if(value.length<3){
+
+        setInvalid(nameInput,msg,"Name should contain at least 3 letters.");
+
+        return false;
+
+    }
+
+    if(!regex.test(value)){
+
+        setInvalid(nameInput,msg,"Only letters and spaces allowed.");
+
+        return false;
+
+    }
+
+    setValid(nameInput,msg,"✓ Valid Name");
+
+    return true;
+
+}
+
+function validateEmail(){
+
+    const msg=document.getElementById("emailError");
+
+    const regex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!regex.test(emailInput.value.trim())){
+
+        setInvalid(emailInput,msg,"Enter a valid email address.");
+
+        return false;
+
+    }
+
+    setValid(emailInput,msg,"✓ Valid Email");
+
+    return true;
+
+}
+
+function validatePhone(){
+
+    const msg=document.getElementById("phoneError");
+
+    const regex=/^[6-9][0-9]{9}$/;
+
+    if(!regex.test(phoneInput.value.trim())){
+
+        setInvalid(phoneInput,msg,"Enter a valid 10-digit Indian mobile number.");
+
+        return false;
+
+    }
+
+    setValid(phoneInput,msg,"✓ Valid Phone");
+
+    return true;
+
+}
+
+function validateEvent(){
+
+    const msg=document.getElementById("eventError");
+
+    if(eventInput.value==""){
+
+        setInvalid(eventInput,msg,"Please select an event.");
+
+        return false;
+
+    }
+
+    setValid(eventInput,msg,"✓ Event Selected");
+
+    return true;
+
+}
+
+function validateCategory(){
+
+    const msg=document.getElementById("categoryError");
+
+    if(categoryInput.value==""){
+
+        setInvalid(categoryInput,msg,"Please select a category.");
+
+        return false;
+
+    }
+
+    setValid(categoryInput,msg,"✓ Category Selected");
+
+    return true;
+
+}
+
+function validateForm(){
+
+    const ok=
+
+    validateName() &&
+    validateEmail() &&
+    validatePhone() &&
+    validateEvent() &&
+    validateCategory();
+
+    btn.disabled=!ok;
+
+}
+
+nameInput.addEventListener("input",validateForm);
+emailInput.addEventListener("input",validateForm);
+phoneInput.addEventListener("input",validateForm);
+eventInput.addEventListener("change",validateForm);
+categoryInput.addEventListener("change",validateForm);
+
+</script>
+
+{% endblock %}
