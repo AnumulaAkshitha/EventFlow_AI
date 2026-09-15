@@ -4,115 +4,682 @@
 
 {% block content %}
 
-<h2 class="mb-4 text-primary">Attendee Analytics</h2>
+<div class="container-fluid">
 
-<div class="row">
+    <!-- Header -->
+    <div class="mb-4">
+        <h2 class="text-primary fw-bold">
+            📊 Event Analytics
+        </h2>
 
-    <div class="col-md-3">
-        <div class="card p-3 shadow">
-            <h5>Total Attendees</h5>
-            <h2>{{ total }}</h2>
-        </div>
+        <p class="text-muted">
+            AI-powered analysis of registrations, attendance,
+            venues, speakers and sessions.
+        </p>
     </div>
 
-    <div class="col-md-3">
-        <div class="card p-3 shadow">
-            <h5>Students</h5>
-            <h2>{{ students }}</h2>
+
+    <!-- =========================
+         SUMMARY CARDS
+         ========================= -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 p-3">
+
+                <h6 class="text-muted">
+                    Total Attendees
+                </h6>
+
+                <h2 class="fw-bold text-primary">
+                    {{ insights.total_attendees }}
+                </h2>
+
+            </div>
+
         </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 p-3">
+
+                <h6 class="text-muted">
+                    Checked In
+                </h6>
+
+                <h2 class="fw-bold text-success">
+                    {{ insights.checked_in }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 p-3">
+
+                <h6 class="text-muted">
+                    Available Speakers
+                </h6>
+
+                <h2 class="fw-bold text-info">
+                    {{ insights.available_speakers }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 p-3">
+
+                <h6 class="text-muted">
+                    Scheduled Sessions
+                </h6>
+
+                <h2 class="fw-bold text-warning">
+                    {{ insights.scheduled_sessions }}
+                </h2>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card p-3 shadow">
-            <h5>Professionals</h5>
-            <h2>{{ professionals }}</h2>
+
+    <!-- =========================
+         ATTENDANCE RATE
+         ========================= -->
+
+    <div class="card shadow-sm border-0 p-4 mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-8">
+
+                <h4 class="fw-bold">
+                    Attendance Rate
+                </h4>
+
+                <p class="text-muted mb-2">
+                    Percentage of registered attendees who have
+                    completed check-in.
+                </p>
+
+                <div class="progress" style="height: 25px;">
+
+                    <div
+                        class="progress-bar bg-success"
+                        role="progressbar"
+                        style="width: {{ insights.attendance_rate }}%;">
+
+                        {{ insights.attendance_rate }}%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 text-center">
+
+                <h1 class="display-5 fw-bold text-success">
+                    {{ insights.attendance_rate }}%
+                </h1>
+
+                <span class="text-muted">
+                    Attendance
+                </span>
+
+            </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card p-3 shadow">
-            <h5>Speakers</h5>
-            <h2>{{ speakers }}</h2>
+
+    <!-- =========================
+         CHART ROW 1
+         ========================= -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- Event Distribution -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 p-4">
+
+                <h4 class="fw-bold">
+                    📊 Event Registrations
+                </h4>
+
+                <p class="text-muted">
+                    Number of attendees registered for each event.
+                </p>
+
+                <canvas id="eventChart"></canvas>
+
+            </div>
+
         </div>
+
+
+        <!-- Category Distribution -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 p-4">
+
+                <h4 class="fw-bold">
+                    🥧 Attendee Categories
+                </h4>
+
+                <p class="text-muted">
+                    Distribution of attendees by category.
+                </p>
+
+                <canvas id="categoryChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         CHART ROW 2
+         ========================= -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- Check-in -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 p-4">
+
+                <h4 class="fw-bold">
+                    📷 Check-in Status
+                </h4>
+
+                <p class="text-muted">
+                    Registered attendees compared with completed
+                    check-ins.
+                </p>
+
+                <canvas id="checkinChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- Venue -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 p-4">
+
+                <h4 class="fw-bold">
+                    🏢 Venue Availability
+                </h4>
+
+                <p class="text-muted">
+                    Current availability of registered venues.
+                </p>
+
+                <canvas id="venueChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         CHART ROW 3
+         ========================= -->
+
+    <div class="row g-4 mb-4">
+
+
+        <!-- Speaker -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 p-4">
+
+                <h4 class="fw-bold">
+                    🎤 Speaker Availability
+                </h4>
+
+                <p class="text-muted">
+                    Available and unavailable speakers.
+                </p>
+
+                <canvas id="speakerChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- Sessions -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm border-0 p-4">
+
+                <h4 class="fw-bold">
+                    📅 Session Status
+                </h4>
+
+                <p class="text-muted">
+                    Overview of scheduled sessions.
+                </p>
+
+                <canvas id="sessionChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         AI INSIGHTS
+         ========================= -->
+
+    <div class="card shadow-sm border-primary p-4 mb-4">
+
+        <h3 class="fw-bold text-primary">
+            🤖 AI Event Insights
+        </h3>
+
+        <p class="text-muted">
+            Recommendations generated by the EventFlow AI
+            Analytics Agent.
+        </p>
+
+
+        {% if insights.recommendations %}
+
+        <div class="list-group">
+
+            {% for recommendation in insights.recommendations %}
+
+            <div class="list-group-item">
+
+                🤖 {{ recommendation }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="alert alert-info">
+
+            No additional recommendations at this time.
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         KEY INSIGHTS
+         ========================= -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm p-4">
+
+                <h5 class="fw-bold">
+                    🏆 Most Popular Event
+                </h5>
+
+                <h4 class="text-primary mt-3">
+                    {{ insights.popular_event }}
+                </h4>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm p-4">
+
+                <h5 class="fw-bold">
+                    👥 Largest Attendee Group
+                </h5>
+
+                <h4 class="text-primary mt-3">
+                    {{ insights.majority_category }}
+                </h4>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm p-4">
+
+                <h5 class="fw-bold">
+                    🏢 Venue Availability
+                </h5>
+
+                <h4 class="text-primary mt-3">
+                    {{ insights.venue_availability }}%
+                </h4>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
 
-<div class="row mt-4">
 
-    <div class="col-md-6">
+<!-- =========================
+     CHART.JS
+     ========================= -->
 
-        <div class="card p-3 shadow">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            <h4>Category Distribution</h4>
-
-            <canvas id="categoryChart"></canvas>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-6">
-
-        <div class="card p-3 shadow">
-
-            <h4>Event Distribution</h4>
-
-            <canvas id="eventChart"></canvas>
-
-        </div>
-
-    </div>
-
-</div>
 
 <script>
 
-new Chart(document.getElementById("categoryChart"),{
+    // =========================
+    // Event Registration Chart
+    // =========================
 
-type:'pie',
+    new Chart(
+        document.getElementById("eventChart"),
+        {
+            type: "bar",
 
-data:{
+            data: {
 
-labels:["Students","Professionals","Speakers"],
+                labels: [
+                    "AI Workshop",
+                    "Hackathon",
+                    "Cloud Summit"
+                ],
 
-datasets:[{
+                datasets: [{
 
-data:[
-{{ students }},
-{{ professionals }},
-{{ speakers }}
-]
+                    label: "Registrations",
 
-}]
+                    data: [
+                        {{ insights.events["AI Workshop"] }},
+                        {{ insights.events["Hackathon"] }},
+                        {{ insights.events["Cloud Summit"] }}
+                    ]
 
-}
+                }]
 
-});
+            },
 
-new Chart(document.getElementById("eventChart"),{
+            options: {
 
-type:'bar',
+                responsive: true,
 
-data:{
+                plugins: {
 
-labels:["AI Workshop","Hackathon","Cloud Summit"],
+                    legend: {
+                        display: false
+                    }
 
-datasets:[{
+                }
 
-label:"Registrations",
+            }
 
-data:[
-{{ ai }},
-{{ hackathon }},
-{{ cloud }}
-]
+        }
+    );
 
-}]
 
-}
+    // =========================
+    // Category Chart
+    // =========================
 
-});
+    new Chart(
+        document.getElementById("categoryChart"),
+        {
+            type: "pie",
+
+            data: {
+
+                labels: [
+                    "Students",
+                    "Professionals",
+                    "Speakers"
+                ],
+
+                datasets: [{
+
+                    data: [
+                        {{ insights.categories["Students"] }},
+                        {{ insights.categories["Professionals"] }},
+                        {{ insights.categories["Speakers"] }}
+                    ]
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true
+
+            }
+
+        }
+    );
+
+
+    // =========================
+    // Check-in Chart
+    // =========================
+
+    new Chart(
+        document.getElementById("checkinChart"),
+        {
+            type: "doughnut",
+
+            data: {
+
+                labels: [
+                    "Checked In",
+                    "Pending"
+                ],
+
+                datasets: [{
+
+                    data: [
+                        {{ insights.checked_in }},
+                        {{ insights.pending }}
+                    ]
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true
+
+            }
+
+        }
+    );
+
+
+    // =========================
+    // Venue Chart
+    // =========================
+
+    new Chart(
+        document.getElementById("venueChart"),
+        {
+            type: "bar",
+
+            data: {
+
+                labels: [
+                    "Available",
+                    "Unavailable"
+                ],
+
+                datasets: [{
+
+                    label: "Venues",
+
+                    data: [
+                        {{ insights.available_venues }},
+                        {{ insights.total_venues - insights.available_venues }}
+                    ]
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    // =========================
+    // Speaker Chart
+    // =========================
+
+    new Chart(
+        document.getElementById("speakerChart"),
+        {
+            type: "bar",
+
+            data: {
+
+                labels: [
+                    "Available",
+                    "Unavailable"
+                ],
+
+                datasets: [{
+
+                    label: "Speakers",
+
+                    data: [
+                        {{ insights.available_speakers }},
+                        {{ insights.total_speakers - insights.available_speakers }}
+                    ]
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    // =========================
+    // Session Chart
+    // =========================
+
+    new Chart(
+        document.getElementById("sessionChart"),
+        {
+            type: "bar",
+
+            data: {
+
+                labels: [
+                    "Scheduled",
+                    "Other"
+                ],
+
+                datasets: [{
+
+                    label: "Sessions",
+
+                    data: [
+                        {{ insights.scheduled_sessions }},
+                        {{ insights.total_sessions - insights.scheduled_sessions }}
+                    ]
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                }
+
+            }
+
+        }
+    );
 
 </script>
 

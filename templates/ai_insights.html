@@ -4,145 +4,615 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container-fluid">
 
-<h2 class="mb-4 text-primary">
-🤖 AI Insights Dashboard
-</h2>
+    <!-- Header -->
+    <div class="mb-4">
 
-<div class="row">
+        <h2 class="text-primary fw-bold">
+            🤖 AI Insights Dashboard
+        </h2>
 
-<div class="col-md-4 mb-4">
+        <p class="text-muted">
+            Intelligent recommendations generated from event,
+            venue, speaker and session data.
+        </p>
 
-<div class="card shadow border-primary">
+    </div>
 
-<div class="card-body">
 
-<h5>🔥 Trending Event</h5>
+    <!-- ========================= -->
+    <!-- OVERVIEW CARDS -->
+    <!-- ========================= -->
 
-<h3>{{ trending_event }}</h3>
+    <div class="row">
 
-</div>
+        <div class="col-md-3 mb-4">
 
-</div>
+            <div class="card shadow border-primary h-100">
 
-</div>
+                <div class="card-body">
 
-<div class="col-md-4 mb-4">
+                    <h6 class="text-muted">
+                        👥 Total Attendees
+                    </h6>
 
-<div class="card shadow border-success">
+                    <h2 class="text-primary">
+                        {{ total }}
+                    </h2>
 
-<div class="card-body">
+                </div>
 
-<h5>👥 Majority Audience</h5>
+            </div>
 
-<h3>{{ majority_category }}</h3>
+        </div>
 
-</div>
 
-</div>
+        <div class="col-md-3 mb-4">
 
-</div>
+            <div class="card shadow border-success h-100">
 
-<div class="col-md-4 mb-4">
+                <div class="card-body">
 
-<div class="card shadow border-warning">
+                    <h6 class="text-muted">
+                        ✅ Attendance Rate
+                    </h6>
 
-<div class="card-body">
+                    <h2 class="text-success">
+                        {{ attendance_rate }}%
+                    </h2>
 
-<h5>🏢 Venue Recommendation</h5>
+                </div>
 
-<h3>{{ venue }}</h3>
+            </div>
 
-</div>
+        </div>
 
-</div>
 
-</div>
+        <div class="col-md-3 mb-4">
 
-</div>
+            <div class="card shadow border-warning h-100">
 
-<div class="row">
+                <div class="card-body">
 
-<div class="col-md-4 mb-4">
+                    <h6 class="text-muted">
+                        🏢 Available Venues
+                    </h6>
 
-<div class="card shadow">
+                    <h2 class="text-warning">
+                        {{ available_venues }}/{{ total_venues }}
+                    </h2>
 
-<div class="card-body">
+                </div>
 
-<h5>📈 Expected Attendance</h5>
+            </div>
 
-<h2>{{ expected_attendance }}/{{ total }}</h2>
+        </div>
 
-</div>
 
-</div>
+        <div class="col-md-3 mb-4">
 
-</div>
+            <div class="card shadow border-info h-100">
 
-<div class="col-md-4 mb-4">
+                <div class="card-body">
 
-<div class="card shadow">
+                    <h6 class="text-muted">
+                        📅 Scheduled Sessions
+                    </h6>
 
-<div class="card-body">
+                    <h2 class="text-info">
+                        {{ scheduled_sessions }}
+                    </h2>
 
-<h5>🙋 Volunteers Needed</h5>
+                </div>
 
-<h2>{{ volunteers }}</h2>
+            </div>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-</div>
 
-<div class="col-md-4 mb-4">
+    <!-- ========================= -->
+    <!-- EVENT & AUDIENCE -->
+    <!-- ========================= -->
 
-<div class="card shadow">
+    <div class="row">
 
-<div class="card-body">
+        <div class="col-md-6 mb-4">
 
-<h5>⚠ Crowd Status</h5>
+            <div class="card shadow h-100">
 
-<h2>{{ crowd }}</h2>
+                <div class="card-body">
 
-</div>
+                    <h4 class="fw-bold text-primary">
+                        🔥 Event Insight
+                    </h4>
 
-</div>
+                    <hr>
 
-</div>
+                    <p>
+                        <strong>Most Popular Event:</strong>
+                        {{ trending_event }}
+                    </p>
 
-</div>
+                    <p>
+                        <strong>Majority Audience:</strong>
+                        {{ majority_category }}
+                    </p>
 
-<div class="card shadow mt-4">
+                    <p>
+                        <strong>Total Registrations:</strong>
+                        {{ total }}
+                    </p>
 
-<div class="card-body">
+                    <p>
+                        <strong>Checked-In:</strong>
+                        {{ checked_in }}
+                    </p>
 
-<h4>🤖 AI Summary</h4>
+                    <p>
+                        <strong>Pending:</strong>
+                        {{ pending }}
+                    </p>
 
-<ul>
+                </div>
 
-<li>Total registrations: <b>{{ total }}</b></li>
+            </div>
 
-<li>Checked-in attendees: <b>{{ checked_in }}</b></li>
+        </div>
 
-<li>Pending attendees: <b>{{ pending }}</b></li>
 
-<li>Most popular event: <b>{{ trending_event }}</b></li>
+        <!-- Venue -->
+        <div class="col-md-6 mb-4">
 
-<li>Majority audience: <b>{{ majority_category }}</b></li>
+            <div class="card shadow h-100">
 
-<li>Recommended venue: <b>{{ venue }}</b></li>
+                <div class="card-body">
 
-<li>Suggested volunteers: <b>{{ volunteers }}</b></li>
+                    <h4 class="fw-bold text-primary">
+                        🏢 Venue Intelligence
+                    </h4>
 
-<li>Prediction confidence: <b>{{ confidence }}%</b></li>
+                    <hr>
 
-</ul>
+                    <p>
+                        <strong>Total Venues:</strong>
+                        {{ total_venues }}
+                    </p>
 
-</div>
+                    <p>
+                        <strong>Available:</strong>
+                        {{ available_venues }}
+                    </p>
 
-</div>
+                    <p>
+                        <strong>Occupied:</strong>
+                        {{ occupied_venues }}
+                    </p>
+
+                    <p>
+                        <strong>Availability:</strong>
+                        {{ venue_availability }}%
+                    </p>
+
+                    {% if venue_utilization %}
+
+                    <h6 class="mt-3">
+                        Venue Utilization
+                    </h6>
+
+                    {% for item in venue_utilization %}
+
+                    <div class="mb-2">
+
+                        <div class="d-flex justify-content-between">
+
+                            <span>
+                                {{ item.venue }}
+                            </span>
+
+                            <strong>
+                                {{ item.utilization }}%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                role="progressbar"
+                                style="width: {{ item.utilization }}%;">
+
+                                {{ item.utilization }}%
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                    {% else %}
+
+                    <p class="text-muted">
+                        No scheduled venue utilization data available.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- SPEAKER INTELLIGENCE -->
+    <!-- ========================= -->
+
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold text-primary">
+                🎤 Speaker Intelligence
+            </h4>
+
+            <hr>
+
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+
+                    <strong>Total Speakers</strong>
+
+                    <h3>
+                        {{ total_speakers }}
+                    </h3>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <strong>Available Speakers</strong>
+
+                    <h3 class="text-success">
+                        {{ available_speakers }}
+                    </h3>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <strong>Unavailable Speakers</strong>
+
+                    <h3 class="text-danger">
+                        {{ unavailable_speakers }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            {% if speaker_performance %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Speaker</th>
+                            <th>Expertise</th>
+                            <th>Experience</th>
+                            <th>Sessions</th>
+                            <th>Availability</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for speaker in speaker_performance %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ speaker.name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ speaker.expertise }}
+                            </td>
+
+                            <td>
+                                {{ speaker.experience }} years
+                            </td>
+
+                            <td>
+                                {{ speaker.total_sessions }}
+                            </td>
+
+                            <td>
+
+                                {% if speaker.available %}
+
+                                <span class="badge bg-success">
+                                    Available
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-danger">
+                                    Unavailable
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <p class="text-muted">
+                No speaker data available.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- SESSION INTELLIGENCE -->
+    <!-- ========================= -->
+
+    <div class="row">
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow border-primary">
+
+                <div class="card-body">
+
+                    <h5>
+                        📅 Total Sessions
+                    </h5>
+
+                    <h2 class="text-primary">
+                        {{ total_sessions }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow border-success">
+
+                <div class="card-body">
+
+                    <h5>
+                        ✅ Scheduled
+                    </h5>
+
+                    <h2 class="text-success">
+                        {{ scheduled_sessions }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow border-warning">
+
+                <div class="card-body">
+
+                    <h5>
+                        📊 Schedule Rate
+                    </h5>
+
+                    <h2 class="text-warning">
+                        {{ scheduled_session_rate }}%
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MOST POPULAR SESSION -->
+    <!-- ========================= -->
+
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold text-primary">
+                🔥 Session Popularity
+            </h4>
+
+            <hr>
+
+            {% if session_popularity %}
+
+            <div class="table-responsive">
+
+                <table class="table table-striped">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Session</th>
+                            <th>Event</th>
+                            <th>Participation</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for session in session_popularity %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ session.title }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ session.event }}
+                            </td>
+
+                            <td>
+                                {{ session.attendees }}
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-success">
+                                    {{ session.status }}
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="alert alert-info">
+
+                <strong>
+                    Most Popular Session:
+                </strong>
+
+                {{ most_popular_session }}
+
+            </div>
+
+            {% else %}
+
+            <p class="text-muted">
+                No session analytics available yet.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- AI RECOMMENDATIONS -->
+    <!-- ========================= -->
+
+    <div class="card shadow border-primary mb-4">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold text-primary">
+                🤖 AI Recommendations
+            </h4>
+
+            <hr>
+
+            {% if recommendations %}
+
+            <div class="list-group">
+
+                {% for recommendation in recommendations %}
+
+                <div class="list-group-item">
+
+                    💡 {{ recommendation }}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <p class="text-muted">
+                No recommendations available yet.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- SYSTEM STATUS -->
+    <!-- ========================= -->
+
+    <div class="alert alert-success shadow">
+
+        <h5 class="fw-bold">
+            🧠 EventFlow AI Status
+        </h5>
+
+        <p class="mb-0">
+
+            The AI system is currently analyzing attendee,
+            venue, speaker and session data to support
+            event planning and operational decisions.
+
+        </p>
+
+    </div>
 
 </div>
 

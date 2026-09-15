@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Event Intelligence{% endblock %}
+{% block content %}
+<div class="milestone-header"><div><p class="eyebrow">Milestone 4 / intelligence layer</p><h2>Event Intelligence Engine</h2><p>Collects data from every agent, analyzes it, and surfaces risks and recommendations.</p></div><span class="live-pill">● Live</span></div>
+<div class="row g-3 metric-grid mb-4">
+    {% for label, value, note in [("Event health score", 100 - (intelligence.risks|length * 10), "Based on active risks"), ("Check-in rate", intelligence.metrics.attendance_rate|string + "%", intelligence.metrics.checked_in|string + " checked in"), ("Session coverage", intelligence.metrics.session_rate|string + "%", intelligence.metrics.scheduled_sessions|string + " scheduled"), ("Active risks", intelligence.risks|length, "Needs review" if intelligence.risks else "All clear")] %}
+    <div class="col-sm-6 col-xl-3"><div class="metric-card"><span>{{ label }}</span><strong>{{ value }}</strong><small>{{ note }}</small></div></div>
+    {% endfor %}
+</div>
+<div class="section-heading"><div><h5>Agent orchestration pipeline</h5><span>Click a stage to inspect its live input and output</span></div><button class="ops-action" type="button" id="refresh-pipeline"><i class="bi bi-arrow-clockwise"></i> Refresh pipeline</button></div>
+<div class="pipeline mb-4" data-stages='{{ intelligence.pipeline|tojson|forceescape }}'>
+    {% for stage in intelligence.pipeline %}
+    <button class="pipeline-step{% if loop.first %} selected{% endif %}" type="button" data-pipeline-key="{{ stage.key }}"><span class="step-index">0{{ loop.index }}</span><strong>{{ stage.name }}</strong><small>{{ stage.output }}</small><em class="pipeline-status">{{ stage.status }}</em></button>
+    {% endfor %}
+</div>
+<section class="pipeline-detail surface-panel" id="pipeline-detail"><div class="section-heading"><h5 id="pipeline-detail-title">{{ intelligence.pipeline[0].name }}</h5><span id="pipeline-detail-status">{{ intelligence.pipeline[0].status }}</span></div><div class="row"><div class="col-md-6"><small class="text-muted">INPUT</small><p id="pipeline-detail-input">{{ intelligence.pipeline[0].input }}</p></div><div class="col-md-6"><small class="text-muted">OUTPUT</small><p id="pipeline-detail-output">{{ intelligence.pipeline[0].output }}</p></div></div><p class="text-muted mb-0" id="pipeline-detail-description">{{ intelligence.pipeline[0].detail }}</p></section>
+<div class="row g-4"><div class="col-lg-7"><section class="surface-panel"><div class="section-heading"><h5>Insights & recommendations</h5><span>{{ intelligence.recommendations|length }} actions</span></div>{% for item in intelligence.recommendations %}<div class="recommendation"><span>↗</span><p>{{ item }}</p></div>{% endfor %}</section></div><div class="col-lg-5"><section class="surface-panel"><div class="section-heading"><h5>Risk signals</h5><span>{{ intelligence.risks|length }} detected</span></div>{% for risk in intelligence.risks %}<div class="risk-row"><b>{{ risk.title }}</b><small>{{ risk.detail }}</small><em>{{ risk.level|upper }}</em></div>{% else %}<p class="empty-state">No threshold risks detected.</p>{% endfor %}</section></div></div>
+{% endblock %}

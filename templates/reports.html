@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Analytical Reports | EventFlow AI{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-2">
+    <i class="bi bi-file-earmark-bar-graph-fill text-primary"></i>
+    Analytical Reports
+</h1>
+
+<p class="text-muted mb-4">
+    Comprehensive sponsorship, incident and operational alert analytics.
+</p>
+
+
+<!-- SPONSOR PERFORMANCE REPORT -->
+
+<h3 class="mb-3">
+    <i class="bi bi-handshake-fill text-warning"></i>
+    Sponsor Performance Report
+</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Total Sponsors</h6>
+                <h2>{{ total_sponsors }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Total Sponsorship</h6>
+                <h2>₹{{ total_sponsorship }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Paid Sponsors</h6>
+                <h2 class="text-success">{{ paid_sponsors }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Pending Payment</h6>
+                <h2 class="text-danger">{{ pending_sponsors }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm mb-5">
+
+    <div class="card-body">
+
+        <h5>
+            <i class="bi bi-graph-up-arrow"></i>
+            Average Sponsor Engagement
+        </h5>
+
+        <div class="progress" style="height: 30px;">
+
+            <div
+                class="progress-bar bg-primary"
+                role="progressbar"
+                style="width: {{ average_engagement }}%;"
+            >
+                {{ average_engagement }}%
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- INCIDENT REPORT -->
+
+<h3 class="mb-3">
+    <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+    Incident Management Report
+</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Total Incidents</h6>
+                <h2>{{ total_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Open Incidents</h6>
+                <h2 class="text-warning">{{ open_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">High Severity</h6>
+                <h2 class="text-danger">{{ high_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Critical Incidents</h6>
+                <h2 class="text-danger">{{ critical_incidents }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm mb-5">
+
+    <div class="card-body">
+
+        <h5>
+            <i class="bi bi-check-circle-fill text-success"></i>
+            Closed Incidents
+        </h5>
+
+        <h2 class="text-success">
+            {{ closed_incidents }}
+        </h2>
+
+    </div>
+
+</div>
+
+
+<!-- OPERATIONAL ALERT REPORT -->
+
+<h3 class="mb-3">
+    <i class="bi bi-bell-fill text-danger"></i>
+    Operational Alert Report
+</h3>
+
+<div class="row mb-4">
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Total Alerts</h6>
+                <h2>{{ total_alerts }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Active Alerts</h6>
+                <h2 class="text-danger">{{ active_alerts }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h6 class="text-muted">Resolved Alerts</h6>
+                <h2 class="text-success">{{ resolved_alerts }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- AI SUMMARY -->
+
+<div class="card shadow-sm border-primary mb-4">
+
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="bi bi-robot"></i>
+            AI Operational Summary
+        </h4>
+    </div>
+
+    <div class="card-body">
+
+        <ul class="mb-0">
+
+            <li>
+                Total of <strong>{{ total_sponsors }}</strong>
+                sponsors are being monitored.
+            </li>
+
+            <li>
+                Average sponsor engagement is
+                <strong>{{ average_engagement }}%</strong>.
+            </li>
+
+            <li>
+                There are <strong>{{ total_incidents }}</strong>
+                incidents recorded in the system.
+            </li>
+
+            <li>
+                <strong>{{ critical_incidents }}</strong>
+                critical incidents require priority monitoring.
+            </li>
+
+            <li>
+                <strong>{{ active_alerts }}</strong>
+                operational alerts are currently active.
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+{% endblock %}

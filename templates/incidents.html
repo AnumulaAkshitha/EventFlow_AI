@@ -1,0 +1,381 @@
+{% extends "base.html" %}
+
+{% block title %}Incident Management | EventFlow AI{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-2">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    Incident Management
+</h1>
+
+<p class="text-muted mb-4">
+    Report, track, prioritize and manage event incidents.
+</p>
+
+
+<!-- ADD INCIDENT -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-header bg-danger text-white">
+        <h4 class="mb-0">
+            <i class="bi bi-plus-circle-fill"></i>
+            Report New Incident
+        </h4>
+    </div>
+
+    <div class="card-body">
+
+        <form action="/add_incident" method="POST">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Incident Title</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="title"
+                        placeholder="Enter incident title"
+                        required
+                    >
+                </div>
+
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Affected Area</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="affected_area"
+                        placeholder="Example: Hall A"
+                    >
+                </div>
+
+
+                <div class="col-md-12 mb-3">
+
+                    <label class="form-label">
+                        Incident Description
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        name="description"
+                        rows="3"
+                        placeholder="Describe what happened..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="form-label">
+                        Category
+                    </label>
+
+                    <select
+                        class="form-select"
+                        name="category"
+                    >
+                        <option value="Technical">
+                            Technical
+                        </option>
+
+                        <option value="Operational">
+                            Operational
+                        </option>
+
+                        <option value="Security">
+                            Security
+                        </option>
+
+                        <option value="Medical">
+                            Medical
+                        </option>
+
+                        <option value="Venue">
+                            Venue
+                        </option>
+
+                        <option value="Speaker">
+                            Speaker
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="form-label">
+                        Severity
+                    </label>
+
+                    <select
+                        class="form-select"
+                        name="severity"
+                    >
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                        <option value="Critical">
+                            Critical
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="form-label">
+                        Responsible Team
+                    </label>
+
+                    <select
+                        class="form-select"
+                        name="responsible_team"
+                    >
+
+                        <option value="Technical Team">
+                            Technical Team
+                        </option>
+
+                        <option value="AV Team">
+                            AV Team
+                        </option>
+
+                        <option value="Security Team">
+                            Security Team
+                        </option>
+
+                        <option value="Venue Team">
+                            Venue Team
+                        </option>
+
+                        <option value="Medical Team">
+                            Medical Team
+                        </option>
+
+                        <option value="Event Management Team">
+                            Event Management Team
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn btn-danger"
+            >
+                <i class="bi bi-send-fill"></i>
+                Report Incident
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- INCIDENT LIST -->
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white">
+
+        <h4 class="mb-0">
+            <i class="bi bi-list-task"></i>
+            Reported Incidents
+        </h4>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Severity</th>
+                        <th>Priority</th>
+                        <th>Responsible Team</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for incident in incidents %}
+
+                    <tr>
+
+                        <td>#{{ incident.id }}</td>
+
+                        <td>
+                            {{ incident.title }}
+                        </td>
+
+                        <td>
+                            {{ incident.category }}
+                        </td>
+
+                        <td>
+                            {{ incident.severity }}
+                        </td>
+
+                        <td>
+                            {{ incident.priority }}
+                        </td>
+
+                        <td>
+                            {{ incident.responsible_team }}
+                        </td>
+
+                        <td>
+
+                            {% if incident.status == "Open" %}
+
+                             <span class="badge bg-warning text-dark">
+                               Open
+                             </span>
+
+                           {% elif incident.status == "In Progress" %}
+
+                           <span class="badge bg-primary">
+                            In Progress
+                           </span>
+
+                          {% elif incident.status == "Resolved" %}
+
+                          <span class="badge bg-success">
+                           Resolved
+                          </span>
+
+                          {% elif incident.status == "Closed" %}
+
+                          <span class="badge bg-dark">
+                          Closed
+                         </span>
+
+                         {% else %}
+
+                          <span class="badge bg-secondary">
+                             {{ incident.status }}
+                         </span>
+
+                        {% endif %}
+
+                    </td>
+
+                        <td>
+
+                          <!-- AI Analysis Button -->
+                          <a
+                             href="/incident/{{ incident.id }}/analysis"
+                             class="btn btn-sm btn-primary mb-1"
+                           >
+                          <i class="bi bi-robot"></i>
+                           Analyze
+                          </a>
+
+
+                       <!-- OPEN → IN PROGRESS -->
+                        {% if incident.status == "Open" %}
+
+                          <a
+                              href="/incident/{{ incident.id }}/update_status/In%20Progress"
+                              class="btn btn-sm btn-warning mb-1"
+                           >
+                               Start
+                         </a>
+
+
+                    <!-- IN PROGRESS → RESOLVED -->
+                   {% elif incident.status == "In Progress" %}
+
+                     <a
+                       href="/incident/{{ incident.id }}/update_status/Resolved"
+                        class="btn btn-sm btn-success mb-1"
+                      >
+                      Resolve
+                    </a>
+
+
+                    <!-- RESOLVED → CLOSED -->
+                    {% elif incident.status == "Resolved" %}
+
+                      <a
+                         href="/incident/{{ incident.id }}/update_status/Closed"
+                         class="btn btn-sm btn-dark mb-1"
+                      >
+                      Close
+                     </a>
+
+                {% endif %}
+
+             </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="text-center text-muted"
+                        >
+
+                            No incidents reported yet.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

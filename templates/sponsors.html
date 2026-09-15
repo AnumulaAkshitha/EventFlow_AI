@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}Sponsorship Management | EventFlow AI{% endblock %}
+
+{% block content %}
+
+<style>
+    .header {
+        background: #1f2937;
+        color: white;
+        padding: 20px 30px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #1f2937;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    input, select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    button {
+        background: #2563eb;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    button:hover {
+        background: #1d4ed8;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+    th {
+        background: #1f2937;
+        color: white;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .analysis-btn {
+        background: #059669;
+        text-decoration: none;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+    }
+
+    .deliverables-btn {
+        background: #7c3aed;
+        text-decoration: none;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        margin-left: 5px;
+    }
+</style>
+
+
+<!-- Page Header -->
+
+<div class="header">
+    <h1>🤝 Sponsorship Management</h1>
+    <p class="mb-0">
+        Manage sponsors, payments, contracts and engagement
+    </p>
+</div>
+
+
+<!-- Add Sponsor -->
+
+<div class="card">
+
+    <h2>Add New Sponsor</h2>
+
+    <form action="/add_sponsor" method="POST">
+
+        <div class="form-grid">
+
+            <input
+                type="text"
+                name="company_name"
+                placeholder="Company Name"
+                required
+            >
+
+            <input
+                type="text"
+                name="contact_person"
+                placeholder="Contact Person"
+            >
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email"
+            >
+
+            <input
+                type="text"
+                name="phone"
+                placeholder="Phone Number"
+            >
+
+            <select name="sponsorship_package">
+                <option value="Platinum">Platinum</option>
+                <option value="Gold">Gold</option>
+                <option value="Silver">Silver</option>
+                <option value="Bronze">Bronze</option>
+            </select>
+
+            <input
+                type="number"
+                name="sponsorship_amount"
+                placeholder="Sponsorship Amount"
+            >
+
+            <input
+                type="number"
+                name="attributable_revenue"
+                placeholder="Attributable Revenue / Value"
+                min="0"
+                step="0.01"
+            >
+
+            <select name="payment_status">
+                <option value="Pending">Payment Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Partial">Partial Payment</option>
+            </select>
+
+            <select name="contract_status">
+                <option value="Pending">Contract Pending</option>
+                <option value="Signed">Contract Signed</option>
+            </select>
+
+            <input
+                type="number"
+                name="engagement_score"
+                placeholder="Engagement Score (0-100)"
+                min="0"
+                max="100"
+            >
+
+            <input
+                type="text"
+                name="event"
+                placeholder="Event Name"
+            >
+
+        </div>
+
+        <button type="submit">
+            <i class="bi bi-plus-circle"></i>
+            Add Sponsor
+        </button>
+
+    </form>
+
+</div>
+
+
+<!-- Registered Sponsors -->
+
+<div class="card">
+
+    <h2>Registered Sponsors</h2>
+
+    <div class="table-responsive">
+
+        <table>
+
+            <tr>
+                <th>Company</th>
+                <th>Package</th>
+                <th>Amount</th>
+                <th>Attributed Value</th>
+                <th>Payment</th>
+                <th>Contract</th>
+                <th>Engagement</th>
+                <th>Action</th>
+            </tr>
+
+            {% for sponsor in sponsors %}
+
+            <tr>
+
+                <td>{{ sponsor.company_name }}</td>
+
+                <td>{{ sponsor.sponsorship_package }}</td>
+
+                <td>₹{{ sponsor.sponsorship_amount }}</td>
+
+                <td>{% if sponsor.attributable_revenue is not none %}₹{{ sponsor.attributable_revenue }}{% else %}Not recorded{% endif %}</td>
+
+                <td>{{ sponsor.payment_status }}</td>
+
+                <td>{{ sponsor.contract_status }}</td>
+
+                <td>{{ sponsor.engagement_score }}%</td>
+
+                <td>
+
+                    <a
+                        class="analysis-btn"
+                        href="/sponsor/{{ sponsor.id }}/analysis"
+                    >
+                        Analyze
+                    </a>
+
+                    <a
+                        class="deliverables-btn"
+                        href="/sponsor/{{ sponsor.id }}/deliverables"
+                    >
+                        Deliverables
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="7" style="text-align: center;">
+                    No sponsors added yet.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

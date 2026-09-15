@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Incident Analysis | EventFlow AI{% endblock %}
+
+{% block content %}
+
+<style>
+    .analysis-header {
+        background: #1f2937;
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+    .info-card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .stat-card h5 {
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .stat-card p {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .recommendation-list li {
+        padding: 12px;
+        margin-bottom: 10px;
+        background: #f8f9fa;
+        border-left: 4px solid #2563eb;
+        list-style: none;
+    }
+
+    .back-btn {
+        text-decoration: none;
+    }
+</style>
+
+
+<div class="analysis-header">
+
+    <h1>
+        <i class="bi bi-robot"></i>
+        AI Incident Analysis
+    </h1>
+
+    <p class="mb-0">
+        Intelligent incident assessment and recommended actions
+    </p>
+
+</div>
+
+
+<!-- INCIDENT DETAILS -->
+
+<div class="info-card">
+
+    <h2>{{ incident.title }}</h2>
+
+    <p>
+        <strong>Description:</strong><br>
+        {{ incident.description }}
+    </p>
+
+    <p>
+        <strong>Affected Area:</strong>
+        {{ incident.affected_area or "Not specified" }}
+    </p>
+
+    <p>
+        <strong>Responsible Team:</strong>
+        {{ incident.responsible_team }}
+    </p>
+
+</div>
+
+
+<!-- INCIDENT STATUS CARDS -->
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <h5>Category</h5>
+        <p>{{ incident.category }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h5>Severity</h5>
+        <p>{{ incident.severity }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h5>Priority</h5>
+        <p>{{ incident.priority }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h5>Status</h5>
+        <p>{{ incident.status }}</p>
+    </div>
+
+</div>
+
+
+<!-- AI RECOMMENDATIONS -->
+
+<div class="info-card">
+
+    <h3>
+        <i class="bi bi-lightbulb-fill"></i>
+        AI Recommended Actions
+    </h3>
+
+    <ul class="recommendation-list p-0">
+
+        {% for recommendation in recommendations %}
+
+        <li>
+            {{ recommendation }}
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+</div>
+
+
+<a
+    href="{{ url_for('incidents') }}"
+    class="btn btn-primary back-btn"
+>
+    <i class="bi bi-arrow-left"></i>
+    Back to Incidents
+</a>
+
+{% endblock %}

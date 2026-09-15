@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Operational Alerts | EventFlow AI{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-2">
+    <i class="bi bi-bell-fill text-danger"></i>
+    Operational Alerts
+</h1>
+
+<p class="text-muted mb-4">
+    Real-time alerts generated for high-priority and critical incidents.
+</p>
+
+
+<div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white">
+        <h4 class="mb-0">
+            <i class="bi bi-broadcast"></i>
+            Operational Alerts
+        </h4>
+    </div>
+
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Alert Message</th>
+                        <th>Type</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for alert in alerts %}
+
+                    <tr>
+
+                        <td>#{{ alert.id }}</td>
+
+
+                        <td>
+                            <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+                            {{ alert.message }}
+                        </td>
+
+
+                        <td>
+                            {{ alert.alert_type }}
+                        </td>
+
+
+                        <!-- PRIORITY -->
+
+                        <td>
+
+                            {% if alert.priority == "Critical" %}
+
+                                <span class="badge bg-danger">
+                                    Critical
+                                </span>
+
+                            {% elif alert.priority == "High" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    High
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-info text-dark">
+                                    {{ alert.priority }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if alert.status == "Active" %}
+
+                                <span class="badge bg-danger">
+                                    Active
+                                </span>
+
+                            {% elif alert.status == "Resolved" %}
+
+                                <span class="badge bg-success">
+                                    Resolved
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    {{ alert.status }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CREATED AT -->
+
+                        <td>
+                            {{ alert.created_at.strftime("%d-%m-%Y %H:%M") }}
+                        </td>
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            {% if alert.status == "Active" %}
+
+                                <a
+                                    href="/alerts/{{ alert.id }}/resolve"
+                                    class="btn btn-sm btn-success"
+                                >
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Resolve
+                                </a>
+
+                            {% else %}
+
+                                <span class="text-success">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    Resolved
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="text-center text-muted py-4"
+                        >
+
+                            <i class="bi bi-check-circle-fill text-success"></i>
+
+                            No operational alerts. Everything is running normally.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

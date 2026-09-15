@@ -8,35 +8,225 @@
 
     <div class="card shadow p-4">
 
-        <h2 class="text-primary mb-4">Attendee Check-in</h2>
+        <h2 class="text-primary mb-2">
+            📱 Attendee Check-in
+        </h2>
+
+        <p class="text-muted">
+            Scan the attendee QR code or enter the Registration ID manually.
+        </p>
+
+        <!-- QR Scanner -->
+
+        <div class="card bg-light p-3 mb-4">
+
+            <h5 class="fw-bold">
+                📷 Scan QR Code
+            </h5>
+
+            <div
+                id="qr-reader"
+                style="width: 100%; max-width: 500px; margin: auto;">
+            </div>
+
+            <div
+                id="scan-result"
+                class="alert alert-info mt-3"
+                style="display: none;">
+            </div>
+
+        </div>
+
+
+        <!-- Manual Check-in -->
+
+        <h5 class="fw-bold mb-3">
+            Or Enter Registration ID
+        </h5>
 
         <form method="POST">
 
             <input
                 type="text"
                 name="registration_id"
+                id="registration_id"
                 class="form-control mb-3"
-                placeholder="Enter Registration ID (Example: EVT00001)"
+                placeholder="Example: EVT00001"
                 required>
 
-            <button class="btn btn-success">
-                Check In
+            <button
+                type="submit"
+                class="btn btn-success w-100">
+
+                ✅ Check In
+
             </button>
 
         </form>
 
+
         {% if message %}
 
-        <div class="alert alert-info mt-4">
+        {% if status == "success" %}
 
-            {{ message }}
+        <div class="card border-success mt-4">
 
-        </div>
+         <div class="card-body text-center">
 
-        {% endif %}
+          <h3 class="text-success fw-bold">
+            ✅ CHECK-IN SUCCESSFUL
+          </h3>
+
+          <hr>
+
+          <h4 class="fw-bold">
+            {{ attendee.name }}
+          </h4>
+
+         <p class="mb-1">
+            🎫 Registration ID:
+            <strong>{{ attendee.registration_id }}</strong>
+         </p>
+
+         <p class="mb-1">
+            🎯 Event:
+            <strong>{{ attendee.event }}</strong>
+         </p>
+
+         <p class="mb-1">
+            🏷️ Category:
+            <strong>{{ attendee.category }}</strong>
+         </p>
+
+         <p class="mb-0">
+            🕐 Check-in Time:
+            <strong>
+                {{ attendee.checkin_time.strftime("%d %b %Y, %I:%M %p") }}
+            </strong>
+         </p>
+
+         <div class="alert alert-success mt-3 mb-0">
+            Attendee has been successfully checked in.
+         </div>
 
     </div>
 
 </div>
+
+{% elif status == "already_checked" %}
+
+<div class="alert alert-warning mt-4">
+
+    <h5 class="fw-bold">
+        ⚠️ ALREADY CHECKED IN
+    </h5>
+
+    <p class="mb-1">
+        <strong>{{ attendee.name }}</strong>
+        has already checked in.
+    </p>
+
+    <p class="mb-0">
+        Check-in Time:
+        <strong>
+            {{ attendee.checkin_time.strftime("%d %b %Y, %I:%M %p") }}
+        </strong>
+    </p>
+
+</div>
+
+{% elif status == "not_found" %}
+
+<div class="alert alert-danger mt-4">
+
+    ❌ <strong>Attendee Not Found</strong>
+
+    <br>
+
+    No attendee exists with this Registration ID.
+
+</div>
+
+{% else %}
+
+<div class="alert alert-danger mt-4">
+
+    ❌ <strong>Invalid Registration ID</strong>
+
+    <br>
+
+    Please scan a valid EventFlow QR code.
+
+</div>
+
+{% endif %}
+
+{% endif %}
+
+
+    </div>
+
+</div>
+
+
+<!-- QR Scanner Library -->
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<script>
+
+function onScanSuccess(decodedText, decodedResult) {
+
+    // Put scanned registration ID into the input
+    document.getElementById("registration_id").value = decodedText;
+
+    // Show scan result
+    const result = document.getElementById("scan-result");
+
+    result.style.display = "block";
+
+    result.className = "alert alert-success mt-3";
+
+    result.innerHTML =
+        "✅ QR Code detected: <strong>" +
+        decodedText +
+        "</strong>";
+
+    // Stop scanner after successful scan
+    html5QrcodeScanner.clear();
+
+    // Automatically submit the form
+    document.querySelector("form").submit();
+}
+
+
+function onScanFailure(error) {
+
+    // Ignore continuous scanner failures.
+    // QR scanners call this function repeatedly
+    // while searching for a QR code.
+
+}
+
+
+const html5QrcodeScanner = new Html5QrcodeScanner(
+    "qr-reader",
+    {
+        fps: 10,
+        qrbox: {
+            width: 250,
+            height: 250
+        }
+    },
+    false
+);
+
+
+html5QrcodeScanner.render(
+    onScanSuccess,
+    onScanFailure
+);
+
+</script>
 
 {% endblock %}

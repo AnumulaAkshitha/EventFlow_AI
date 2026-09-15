@@ -1,0 +1,408 @@
+{% extends "base.html" %}
+
+{% block title %}Sessions{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card shadow p-4">
+
+        <h2 class="text-primary fw-bold">
+            📅 Session Scheduling
+        </h2>
+
+        <p class="text-muted">
+            Create sessions and let the AI Scheduling Agent
+            detect speaker and venue conflicts.
+        </p>
+
+        <!-- Create Session -->
+
+        <div class="card bg-light p-4 mb-4">
+
+            <h4 class="fw-bold mb-3">
+                Create Session
+            </h4>
+
+            <form method="POST">
+
+                <div class="row">
+
+                    <!-- Session Title -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Session Title
+                        </label>
+
+                        <input
+                            type="text"
+                            name="title"
+                            class="form-control"
+                            placeholder="Example: Introduction to Generative AI"
+                            required>
+
+                    </div>
+
+
+                    <!-- Event -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Event
+                        </label>
+
+                        <select
+                            name="event"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Event
+                            </option>
+
+                            <option value="AI Workshop">
+                                AI Workshop
+                            </option>
+
+                            <option value="Hackathon">
+                                Hackathon
+                            </option>
+
+                            <option value="Cloud Summit">
+                                Cloud Summit
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Date -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="date"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+
+                    <!-- Start Time -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Start Time
+                        </label>
+
+                        <input
+                            type="time"
+                            name="start_time"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+
+                    <!-- End Time -->
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            End Time
+                        </label>
+
+                        <input
+                            type="time"
+                            name="end_time"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+
+                    <!-- Speaker -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Speaker
+                        </label>
+
+                        <select
+                            name="speaker_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Speaker
+                            </option>
+
+                            {% for speaker in speakers %}
+
+                            <option value="{{ speaker.id }}">
+
+                                {{ speaker.name }}
+                                -
+                                {{ speaker.expertise }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Venue -->
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Venue
+                        </label>
+
+                        <select
+                            name="venue_id"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Venue
+                            </option>
+
+                            {% for venue in venues %}
+
+                            <option value="{{ venue.id }}">
+
+                                {{ venue.name }}
+                                -
+                                Capacity: {{ venue.capacity }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    🤖 Validate & Schedule
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Scheduling Result -->
+
+        {% if scheduling_result %}
+
+        {% if scheduling_result.success %}
+
+        <div class="alert alert-success mt-4">
+
+            <h5 class="fw-bold">
+                ✅ Schedule Approved
+            </h5>
+
+            <p class="mb-0">
+                {{ scheduling_result.message }}
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <div class="alert alert-danger mt-4">
+
+            <h5 class="fw-bold">
+                ⚠️ Scheduling Conflict
+            </h5>
+
+            <p class="fw-bold">
+                The session cannot be scheduled because:
+            </p>
+
+            <ul class="mb-0">
+
+                {% for conflict in scheduling_result.conflicts %}
+
+                <li>
+                    {{ conflict }}
+                </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+        {% endif %}
+
+        {% endif %}
+
+
+        <!-- Existing Sessions -->
+
+        <h4 class="fw-bold mt-4 mb-3">
+            📋 Scheduled Sessions
+        </h4>
+
+
+        <div class="table-responsive">
+
+            <table class="table table-striped table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Session</th>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Speaker</th>
+                        <th>Venue</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for session in sessions %}
+
+                    <tr>
+
+                        <td>
+                            {{ session.id }}
+                        </td>
+
+                        <td>
+                            <strong>
+                                {{ session.title }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ session.event }}
+                        </td>
+
+                        <td>
+                            {{ session.date }}
+                        </td>
+
+                        <td>
+                            {{ session.start_time }}
+                            -
+                            {{ session.end_time }}
+                        </td>
+
+                        <td>
+                            {% if session.speaker_id %}
+
+                            {% for speaker in speakers %}
+
+                            {% if speaker.id == session.speaker_id %}
+                                {{ speaker.name }}
+                            {% endif %}
+
+                            {% endfor %}
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if session.venue_id %}
+
+                            {% for venue in venues %}
+
+                            {% if venue.id == session.venue_id %}
+                                {{ venue.name }}
+                            {% endif %}
+
+                            {% endfor %}
+
+                            {% else %}
+
+                            -
+
+                            {% endif %}
+                        </td>
+
+                        <td>
+
+                            {% if session.status == "Scheduled" %}
+
+                            <span class="badge bg-success">
+                                Scheduled
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge bg-secondary">
+                                {{ session.status }}
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            class="text-center text-muted p-4">
+
+                            No sessions scheduled yet.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

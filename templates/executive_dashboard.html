@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Executive Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <p class="text-uppercase text-muted small mb-1">Milestone 4 | Event Intelligence</p>
+        <h2 class="fw-bold mb-1">Executive Dashboard</h2>
+        <p class="text-muted mb-0">A live operational view for decisions, risks, and coordinated action.</p>
+    </div>
+    <div><span class="badge bg-success">Live · {{ intelligence.generated_at }}</span><button class="ops-action ms-2" type="button" id="refresh-dashboard"><i class="bi bi-arrow-clockwise"></i> Refresh</button><a class="ops-action ms-2" href="{{ url_for('intelligence_api') }}" target="_blank" rel="noopener"><i class="bi bi-download"></i> Export snapshot</a></div>
+</div>
+
+<div class="row g-3 mb-4" id="live-dashboard-metrics" data-live-dashboard="true" data-events='{{ intelligence.events|tojson|forceescape }}' data-metrics='{{ intelligence.metrics|tojson|forceescape }}' data-analytics='{{ intelligence.analytics|tojson|forceescape }}' data-alerts='{{ intelligence.alerts|tojson|forceescape }}'>
+    {% for label, value, suffix in [
+        ("Attendees", intelligence.metrics.attendees, ""),
+        ("Check-in rate", intelligence.metrics.attendance_rate, "%"),
+        ("Scheduled sessions", intelligence.metrics.scheduled_sessions, ""),
+        ("Open incidents", intelligence.metrics.open_incidents, ""),
+        ("Sponsors", intelligence.metrics.sponsors, ""),
+        ("Payment realization", intelligence.metrics.sponsor_payment_realization, "%")
+    ] %}
+    <div class="col-sm-6 col-xl-3"><div class="card shadow-sm h-100"><div class="card-body"><p class="text-muted mb-2">{{ label }}</p><h3 class="mb-0" data-metric-label="{{ label }}">{{ value }}{{ suffix }}</h3></div></div></div>
+    {% endfor %}
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-7"><section class="surface-panel chart-panel"><div class="section-heading"><h5>Event demand</h5><span>Registrations by event</span></div><canvas id="event-demand-chart" height="130" aria-label="Event demand chart"></canvas></section></div>
+    <div class="col-lg-5"><section class="surface-panel chart-panel"><div class="section-heading"><h5>Attendance conversion</h5><span>Current check-in status</span></div><canvas id="attendance-chart" height="130" aria-label="Attendance conversion chart"></canvas></section></div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-4"><section class="surface-panel chart-panel"><div class="section-heading"><h5>Incident severity</h5><span>Open and historical</span></div><canvas id="incident-chart" height="150" aria-label="Incident severity chart"></canvas></section></div>
+    <div class="col-lg-4"><section class="surface-panel chart-panel"><div class="section-heading"><h5>Session status</h5><span>Schedule coverage</span></div><canvas id="session-chart" height="150" aria-label="Session status chart"></canvas></section></div>
+    <div class="col-lg-4"><section class="surface-panel chart-panel"><div class="section-heading"><h5>Live alerts</h5><span id="live-sync-status">Synced</span></div><div id="live-alert-list" class="live-alert-list">{% for alert in intelligence.alerts %}<div class="live-alert"><b>{{ alert.priority }}</b><span>{{ alert.message }}</span></div>{% else %}<p class="text-muted">No active alerts.</p>{% endfor %}</div></section></div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <div class="d-flex justify-content-between"><h5>Decision support</h5><span class="text-muted small">Orchestrator output</span></div>
+            {% for recommendation in intelligence.recommendations %}<div class="border-start border-primary border-3 ps-3 py-2 mt-3">{{ recommendation }}</div>{% endfor %}
+        </div></div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <h5>Risk queue</h5>
+            {% if intelligence.risks %}
+                {% for risk in intelligence.risks %}<div class="alert alert-{{ 'danger' if risk.level == 'critical' or risk.level == 'high' else 'warning' }} py-2 mt-3 mb-0"><strong>{{ risk.title }}</strong><br><small>{{ risk.detail }}</small></div>{% endfor %}
+            {% else %}<p class="text-muted mt-3 mb-0">No threshold risks detected.</p>{% endif %}
+        </div></div>
+    </div>
+</div>
+
+<div class="card shadow-sm mt-4"><div class="card-body"><h5>Event demand</h5><div class="row mt-2">{% for event, count in intelligence.events.items() %}<div class="col-md-4"><div class="d-flex justify-content-between"><span>{{ event }}</span><strong>{{ count }}</strong></div><div class="progress mt-2"><div class="progress-bar" style="width: {{ (count / intelligence.metrics.attendees * 100) if intelligence.metrics.attendees else 0 }}%"></div></div></div>{% else %}<p class="text-muted mb-0">No event demand data yet.</p>{% endfor %}</div></div></div>
+{% endblock %}

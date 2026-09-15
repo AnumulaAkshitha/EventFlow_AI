@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sponsor Analysis | EventFlow-AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f9;
+        }
+
+        .header {
+            background: #1f2937;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        .container {
+            width: 85%;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            color: #1f2937;
+        }
+
+        .stat-card p {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0 0;
+        }
+
+        .risk {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        ul {
+            line-height: 1.8;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🤖 Sponsorship Agent Analysis</h1>
+    <p>AI-powered sponsor performance and risk analysis</p>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h2>{{ analysis.sponsor }}</h2>
+
+        <p><strong>Package:</strong> {{ analysis.package }}</p>
+        <p><strong>Payment Status:</strong> {{ analysis.payment_status }}</p>
+        <p><strong>Contract Status:</strong> {{ analysis.contract_status }}</p>
+        <p><strong>Engagement Score:</strong> {{ analysis.engagement_score }}%</p>
+    </div>
+
+
+    <div class="grid">
+
+        <div class="stat-card">
+            <h3>Total Deliverables</h3>
+            <p>{{ analysis.total_deliverables }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Completed</h3>
+            <p>{{ analysis.completed_deliverables }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Pending</h3>
+            <p>{{ analysis.pending_deliverables }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Completion</h3>
+            <p>{{ analysis.completion_percentage }}%</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Risk Level</h3>
+            <p class="risk">{{ analysis.risk_level }}</p>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>🤖 AI Recommendations</h2>
+
+        <ul>
+            {% for recommendation in analysis.recommendations %}
+                <li>{{ recommendation }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <a href="/sponsors" class="back-btn">
+        ← Back to Sponsors
+    </a>
+
+</div>
+
+</body>
+</html>
