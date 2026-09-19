@@ -152,6 +152,10 @@ Useful operational endpoints:
 
 Configuration files containing passwords, API keys, database credentials, or secret keys must remain local. The repository includes a `.gitignore` for `.env`, virtual environments, generated databases, bytecode, and other runtime artifacts. If a credential has ever been committed, rotate it even after removing the file from the latest commit.
 
+## License
+
+EventFlow AI is licensed under the [MIT License](LICENSE).
+
 ## Roadmap direction
 
 The long-term goal is to make EventFlow AI a dependable command center for event teams: one place to understand event health, identify emerging risks, coordinate operational work, and act on recommendations backed by current data.
